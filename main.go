@@ -351,7 +351,6 @@ func serversByNs(ctx *cli.Context) error {
 		for _, v := range tmp {
 			if strings.Contains(v.Name, first) {
 				tmp1 = append(tmp1, v)
-				break
 			}
 		}
 		tmp = tmp1
