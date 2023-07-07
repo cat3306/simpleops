@@ -69,7 +69,7 @@ func commands() cli.Commands {
 	return cli.Commands{
 		&cli.Command{
 			Name:        "get",
-			Usage:       "get server",
+			Usage:       "get namespace",
 			Subcommands: getCommands(),
 		},
 		&cli.Command{
@@ -103,7 +103,7 @@ func deleteConf() cli.Commands {
 }
 func serversDelete(ctx *cli.Context) error {
 	server := ctx.Args().First()
-	if server==""{
+	if server == "" {
 		return errors.New("args err")
 	}
 	for i := 0; i < len(list); i++ {
@@ -247,7 +247,7 @@ func k8sDev(path string, image string, fName string) error {
 	return err
 }
 func UnixCmd(arg string, timeoutArgs ...time.Duration) (string, error) {
-	timeout := 3 * time.Second
+	timeout := 20 * time.Second
 	if len(arg) == 0 {
 		return "", errors.New("arg empty")
 	}
