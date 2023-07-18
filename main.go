@@ -28,6 +28,7 @@ type serverConf struct {
 	Id         int    `json:"id"`
 	Name       string `json:"name"`
 	ServerPath string `json:"server_path"`
+	Deploy     string `json:"deploy"`
 }
 
 func initConf() {
@@ -337,6 +338,7 @@ func getCommands() cli.Commands {
 	return cs
 }
 func serversByNs(ctx *cli.Context) error {
+
 	first := ctx.Args().First()
 	tmp := make([]serverConf, 0)
 	for _, v := range list {
@@ -346,9 +348,13 @@ func serversByNs(ctx *cli.Context) error {
 		}
 
 	}
+	for i := 0; i < len(tmp); i++ {
+		tmp[i].Deploy = fmt.Sprintf("%s deploy %s %s", os.Args[0], ctx.Command.Name, tmp[i].Name)
+	}
 	if first != "" {
 		tmp1 := make([]serverConf, 0)
 		for _, v := range tmp {
+			//v.Deploy = fmt.Sprintf("%s deploy %s %s", os.Args[0], ctx.Command.Name, v.Name)
 			if strings.Contains(v.Name, first) {
 				tmp1 = append(tmp1, v)
 			}
