@@ -15,6 +15,10 @@ import (
 	"time"
 )
 
+const (
+	fileMod = 0644
+)
+
 var (
 	list []opsModel
 	bash = "/bin/bash"
@@ -35,13 +39,20 @@ func initConf() {
 	u, err := os.UserHomeDir()
 	if err != nil {
 		panic(err)
-		return
 	}
 	u = path.Join(u, ".ops.json")
-	b, err := ioutil.ReadFile(u)
-	if err != nil {
+	_, err = os.Stat(u)
+	if os.IsNotExist(err) {
+		f, err := os.OpenFile(u, os.O_CREATE|os.O_RDWR, fileMod)
+		if err != nil {
+			panic(err)
+		}
+		defer f.Close()
+		return
+	} else if err != nil {
 		panic(err)
 	}
+	b, err := ioutil.ReadFile(u)
 	err = json.Unmarshal(b, &list)
 	if err != nil {
 		panic(err)
